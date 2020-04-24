@@ -56,16 +56,17 @@ const Color = {
     example: 'pink'
 };
 
-export function Page({ path }: PageProps) {
+export function Page({ path, history, ...data }: PageProps) {
     return (
         <Fragment>
             <nav>
-                <a href="test">Test</a>
-                <a href="example">Example</a>
+                <a href="test?id=1">Test</a>
+                <a href="example?id=2">Example</a>
             </nav>
-            <main style={{ background: Color[path] }}>
-                Current path: {path}
-            </main>
+            <ul style={{ background: Color[path] }}>
+                <li>path: {path}</li>
+                <li>data: {JSON.stringify(data)}</li>
+            </ul>
         </Fragment>
     );
 }

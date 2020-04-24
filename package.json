@@ -1,6 +1,6 @@
 {
     "name": "crank-router",
-    "version": "0.2.0",
+    "version": "0.2.2",
     "description": "Router component for Crank engine, which is based on Iterable Observer",
     "keywords": [
         "router",

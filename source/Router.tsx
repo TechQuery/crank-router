@@ -8,10 +8,11 @@ import {
 import { HTMLProps } from 'web-utility/source/DOM-type';
 
 import { History } from './History';
-import { watchStop } from './utility';
+import { parsePath, watchStop } from './utility';
 
 export interface PageProps extends Props {
     path: string;
+    history: History;
 }
 
 export type PageComponent = (props: PageProps) => ReturnType<Component>;
@@ -27,16 +28,12 @@ export interface RouterProps extends HTMLProps, Props {
     endClass?: string;
 }
 
-interface CachedRoute extends Route {
-    element: HTMLElement;
-}
-
 export async function* Router(
     this: Context,
     { map, className, children, startClass, endClass }: RouterProps
 ): AsyncIterator<Child, any, HTMLElement> {
     const history = new History().listen(this);
-    var last: CachedRoute | undefined;
+    var last: Route | undefined;
 
     map.sort(({ path: A }, { path: B }) => B.localeCompare(A));
 
@@ -52,46 +49,54 @@ export async function* Router(
             continue;
         }
 
-        if (last && startClass && endClass) {
-            const lastEnd = watchStop(last.element);
+        const nextTree = (
+            <item.component {...parsePath(data)} history={history} />
+        );
 
-            const { lastElementChild: next } = yield (
+        if (last && startClass && endClass) {
+            const [startCSS, endCSS] =
+                    history.compare(last.path, data) < 0
+                        ? [startClass, endClass]
+                        : [endClass, startClass],
+                lastTree = (
+                    <last.component
+                        {...parsePath(last.path)}
+                        history={history}
+                    />
+                );
+            const {
+                firstElementChild: lastPage,
+                lastElementChild: nextPage
+            } = yield (
                 <div className={className}>
-                    <div className={endClass} crank-key={last.path}>
-                        <last.component path={last.path} />
+                    <div crank-key={last.path} className={endCSS}>
+                        {lastTree}
                     </div>
-                    <div className={startClass} crank-key={item.path}>
-                        <item.component path={data} />
+                    <div crank-key={data} className={startCSS}>
+                        {nextTree}
                     </div>
                 </div>
             );
-            const nextEnd = watchStop(next as HTMLElement);
+            const lastEnd = watchStop(lastPage as HTMLElement),
+                nextEnd = watchStop(nextPage as HTMLElement);
 
             yield (
                 <div className={className}>
-                    <div className={endClass} crank-key={last.path}>
-                        <last.component path={last.path} />
+                    <div crank-key={last.path} className={endCSS}>
+                        {lastTree}
                     </div>
-                    <div crank-key={item.path}>
-                        <item.component path={data} />
-                    </div>
+                    <div crank-key={data}>{nextTree}</div>
                 </div>
             );
             await Promise.all([lastEnd, nextEnd]);
         }
 
-        const next = yield (
+        yield (
             <div className={className}>
-                <div crank-key={item.path}>
-                    <item.component path={data} />
-                </div>
+                <div crank-key={data}>{nextTree}</div>
             </div>
         );
-        last = {
-            path: data,
-            component: item.component,
-            element: next.lastElementChild as HTMLElement
-        };
+        last = { path: data, component: item.component };
         resolve();
     }
 }

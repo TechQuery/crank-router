@@ -1,4 +1,5 @@
 import { watchMotion, durationOf } from 'web-utility/source/animation';
+import { parseURLData } from 'web-utility/source/URL';
 
 export function watchStop(element: HTMLElement) {
     return watchMotion(
@@ -15,4 +16,10 @@ export function scrollTo(selector: string, root?: Element) {
         (root || document)
             .querySelector(ID ? `[id="${ID}"]` : selector)
             ?.scrollIntoView({ behavior: 'smooth' });
+}
+
+export function parsePath(raw: string) {
+    const [path, data] = raw.split('?');
+
+    return data ? { ...parseURLData(data), path } : { path };
 }

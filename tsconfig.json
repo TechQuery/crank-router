@@ -7,7 +7,7 @@
         "jsx": "react",
         "jsxFactory": "createElement",
         "skipLibCheck": true,
-        "lib": ["ES2019", "DOM"]
+        "lib": ["ES2019", "DOM", "DOM.Iterable"]
     },
     "typedocOptions": {
         "name": "Crank Router",

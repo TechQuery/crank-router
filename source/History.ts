@@ -13,6 +13,7 @@ const { location, history } = window;
 
 export class History {
     stream = createQueue<string>();
+    paths: string[] = [];
     prefix: PathPrefix;
 
     get path() {
@@ -29,18 +30,12 @@ export class History {
         return this.stream.observable[Symbol.asyncIterator]();
     }
 
-    private pending = false;
-
     async set(path: string, title = document.title) {
-        if (this.pending) return;
-
-        document.title = title;
-
-        this.pending = true;
+        if (this.paths.indexOf(path) < 0) this.paths.push(path);
 
         await this.stream.process(path);
 
-        this.pending = false;
+        document.title = title;
     }
 
     push(path: string, title = document.title) {
@@ -50,6 +45,14 @@ export class History {
             this.prefix + path
         );
         return this.set(path);
+    }
+
+    compare(last: string, next: string) {
+        for (const path of this.paths)
+            if (last === path) return -1;
+            else if (next === path) return 1;
+
+        return 0;
     }
 
     static getInnerPath(link: HTMLAnchorElement) {
@@ -62,6 +65,8 @@ export class History {
         )
             return path;
     }
+
+    private popping = false;
 
     listen(root: EventTarget) {
         root.addEventListener('click', event => {
@@ -83,12 +88,19 @@ export class History {
         });
 
         if (this.prefix === PathPrefix.hash)
-            window.addEventListener('hashchange', () => this.set(this.path));
+            window.addEventListener(
+                'hashchange',
+                () => this.popping || this.set(this.path)
+            );
 
-        window.addEventListener('popstate', ({ state }) => {
+        window.addEventListener('popstate', async ({ state }) => {
             const { path = this.path, title } = state || {};
 
-            this.set(path, title);
+            this.popping = true;
+
+            await this.set(path, title);
+
+            this.popping = false;
         });
 
         setTimeout(() => this.set(this.path));
