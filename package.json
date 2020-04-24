@@ -52,7 +52,7 @@
         "tabWidth": 4
     },
     "lint-staged": {
-        "*.{md,less,json,ts,tsx}": [
+        "*.{md,less,json,yml,ts,tsx}": [
             "prettier --write"
         ]
     },

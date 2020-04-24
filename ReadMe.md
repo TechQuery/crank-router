@@ -3,7 +3,7 @@
 **Router component** for [Crank engine][1], which is based on [Iterable Observer][2].
 
 [![NPM Dependency](https://david-dm.org/TechQuery/crank-router.svg)][3]
-[![Build Status](https://travis-ci.com/TechQuery/crank-router.svg)][4]
+[![API Document](https://github.com/TechQuery/crank-router/workflows/API%20Document/badge.svg?branch=master)][4]
 
 [![NPM](https://nodei.co/npm/crank-router.png?downloads=true&downloadRank=true&stars=true)][5]
 
@@ -108,5 +108,5 @@ nav > a {
 [1]: https://crank.js.org/
 [2]: https://web-cell.dev/iterable-observer/
 [3]: https://david-dm.org/TechQuery/crank-router
-[4]: https://travis-ci.com/TechQuery/crank-router
+[4]: https://github.com/TechQuery/crank-router/actions
 [5]: https://nodei.co/npm/crank-router/
