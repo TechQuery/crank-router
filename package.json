@@ -58,7 +58,7 @@
     },
     "scripts": {
         "test": "lint-staged",
-        "pack-test": "parcel build test/source/index.html -d docs/demo",
+        "pack-test": "parcel build test/source/index.html -d docs/demo --public-url .",
         "start": "parcel test/source/index.html -d docs/demo --open",
         "build": "rm -rf docs/  &&  typedoc  &&  npm run pack-test",
         "help": "npm run build  &&  open-cli docs/index.html",

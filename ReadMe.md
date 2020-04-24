@@ -105,6 +105,10 @@ nav > a {
 }
 ```
 
+## Inspiration
+
+https://github.com/bikeshaving/crank/issues/27#issuecomment-617633472
+
 [1]: https://crank.js.org/
 [2]: https://web-cell.dev/iterable-observer/
 [3]: https://david-dm.org/TechQuery/crank-router
