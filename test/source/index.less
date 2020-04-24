@@ -1,18 +1,22 @@
 body {
     margin: 0;
 }
+nav > a {
+    display: inline-block;
+    margin: 0.5rem;
+}
 .router {
     width: 100vw;
     height: 100vh;
     overflow: auto;
     position: relative;
-    &> * {
+    & > * {
         position: absolute;
         top: 0;
         left: 0;
         transform: translateX(0);
         opacity: 1;
-        transition: 0.25s;
+        transition: 0.5s;
     }
     .start {
         transform: translateX(100%);

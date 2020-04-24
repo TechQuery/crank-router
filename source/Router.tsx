@@ -57,10 +57,10 @@ export async function* Router(
 
             const { lastElementChild: next } = yield (
                 <div className={className}>
-                    <div className={endClass} crank-key={endClass}>
+                    <div className={endClass} crank-key={last.path}>
                         <last.component path={last.path} />
                     </div>
-                    <div className={startClass} crank-key={startClass}>
+                    <div className={startClass} crank-key={item.path}>
                         <item.component path={data} />
                     </div>
                 </div>
@@ -69,10 +69,10 @@ export async function* Router(
 
             yield (
                 <div className={className}>
-                    <div className={endClass} crank-key={endClass}>
+                    <div className={endClass} crank-key={last.path}>
                         <last.component path={last.path} />
                     </div>
-                    <div crank-key={startClass}>
+                    <div crank-key={item.path}>
                         <item.component path={data} />
                     </div>
                 </div>
@@ -82,7 +82,7 @@ export async function* Router(
 
         const next = yield (
             <div className={className}>
-                <div>
+                <div crank-key={item.path}>
                     <item.component path={data} />
                 </div>
             </div>

@@ -32,12 +32,16 @@
     },
     "devDependencies": {
         "@bikeshaving/crank": "^0.1.0",
+        "@types/node": "^13.13.2",
+        "event-target-shim": "^5.0.1",
         "husky": "^4.2.5",
         "iterable-observer": "^1.0.0-beta.4",
         "less": "^3.11.1",
         "lint-staged": "^10.1.7",
+        "open-cli": "^6.0.1",
         "parcel-bundler": "^1.12.4",
         "prettier": "^2.0.5",
+        "typedoc": "^0.17.4",
         "typescript": "^3.8.3",
         "web-utility": "^1.5.0"
     },
@@ -48,18 +52,22 @@
         "tabWidth": 4
     },
     "lint-staged": {
-        "*.{md,json,ts,tsx}": [
+        "*.{md,less,json,ts,tsx}": [
             "prettier --write"
         ]
     },
     "scripts": {
         "test": "lint-staged",
-        "pack-test": "cd test/  &&  parcel build source/index.html",
-        "start": "cd test/  &&  parcel source/index.html --open"
+        "pack-test": "parcel build test/source/index.html -d docs/demo",
+        "start": "parcel test/source/index.html -d docs/demo --open",
+        "build": "rm -rf docs/  &&  typedoc  &&  npm run pack-test",
+        "help": "npm run build  &&  open-cli docs/index.html",
+        "prepublishOnly": "npm run build"
     },
     "husky": {
         "hooks": {
-            "pre-commit": "npm test"
+            "pre-commit": "npm test",
+            "pre-push": "npm run build"
         }
     }
 }

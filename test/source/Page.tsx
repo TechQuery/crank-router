@@ -9,11 +9,13 @@ const Color = {
 export function Page({ path }: PageProps) {
     return (
         <Fragment>
-            <nav style={{ background: Color[path] }}>
+            <nav>
                 <a href="test">Test</a>
                 <a href="example">Example</a>
             </nav>
-            <main>Current path: {path}</main>
+            <main style={{ background: Color[path] }}>
+                Current path: {path}
+            </main>
         </Fragment>
     );
 }
