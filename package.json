@@ -72,9 +72,9 @@
         "start": "parcel test/source/index.html -d docs/demo --open",
         "set-chrome": "app-find chrome -c",
         "test": "lint-staged  &&  npm run pack-test  &&  jest --forceExit",
-        "build": "rm -rf docs/  &&  typedoc",
+        "build": "rm -rf docs/  &&  typedoc  &&  npm run pack-test",
         "help": "npm run build  &&  open-cli docs/index.html",
-        "prepublishOnly": "npm test  &&  npm run build"
+        "prepublishOnly": "npm run build"
     },
     "husky": {
         "hooks": {
