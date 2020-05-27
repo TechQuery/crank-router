@@ -1,0 +1,268 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>Crank Router</title>
+	<meta name="description" content="Documentation for Crank Router">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">Crank Router</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>Crank Router</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#crank-router" id="crank-router" style="color: inherit; text-decoration: none;">
+					<h1>Crank Router</h1>
+				</a>
+				<p><strong>Router component</strong> for <a href="https://crank.js.org/">Crank engine</a>, which is based on <a href="https://web-cell.dev/iterable-observer/">Iterable Observer</a>.</p>
+				<p><a href="https://david-dm.org/TechQuery/crank-router"><img src="https://david-dm.org/TechQuery/crank-router.svg" alt="NPM Dependency"></a>
+				<a href="https://github.com/TechQuery/crank-router/actions"><img src="https://github.com/TechQuery/crank-router/workflows/API%20Document/badge.svg?branch=master" alt="API Document"></a></p>
+				<p><a href="https://nodei.co/npm/crank-router/"><img src="https://nodei.co/npm/crank-router.png?downloads=true&downloadRank=true&stars=true" alt="NPM"></a></p>
+				<a href="#feature" id="feature" style="color: inherit; text-decoration: none;">
+					<h2>Feature</h2>
+				</a>
+				<ul>
+					<li><p><strong>Page Link</strong> (support <code>&lt;a /&gt;</code>, <code>&lt;area /&gt;</code> &amp; <code>&lt;form /&gt;</code>)</p>
+						<ul>
+							<li><code>&lt;a href=&quot;route/path&quot;&gt;Page title&lt;/a&gt;</code></li>
+							<li><code>&lt;a href=&quot;route/path&quot; title=&quot;Page title&quot; target=&quot;_self&quot;&gt;Example page&lt;/a&gt;</code></li>
+							<li><code>&lt;a href=&quot;#page-section&quot;&gt;Page section&lt;/a&gt;</code> (Scroll to an Anchor smoothly)</li>
+							<li><code>&lt;form method=&quot;get&quot; action=&quot;route/path&quot; /&gt;</code> (Form Data processed by <code>URLSearchParams</code>)</li>
+						</ul>
+					</li>
+					<li><p><strong>Path Mode</strong>: <code>location.hash</code> (default) &amp; <code>history.pushState()</code></p>
+					</li>
+					<li><p><strong>Async Loading</strong> (recommend to use with <code>import()</code> ECMAScript proposal)</p>
+					</li>
+				</ul>
+				<a href="#installation" id="installation" style="color: inherit; text-decoration: none;">
+					<h2>Installation</h2>
+				</a>
+				<pre><code class="language-shell">npm install @bikeshaving/crank crank-router \
+    iterable-observer web-utility</code></pre>
+				<a href="#example" id="example" style="color: inherit; text-decoration: none;">
+					<h2>Example</h2>
+				</a>
+				<ul>
+					<li><p><a href="https://github.com/TechQuery/crank-router/tree/master/test/source">Source code</a></p>
+					</li>
+					<li><p><a href="https://tech-query.me/crank-router/demo/">Online preview</a></p>
+					</li>
+				</ul>
+				<p><code>index.tsx</code></p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> { createElement } <span class="hljs-keyword">from</span> <span class="hljs-string">'@bikeshaving/crank'</span>;
+<span class="hljs-keyword">import</span> { renderer } <span class="hljs-keyword">from</span> <span class="hljs-string">'@bikeshaving/crank/dom'</span>;
+<span class="hljs-keyword">import</span> { Router } <span class="hljs-keyword">from</span> <span class="hljs-string">'crank-router/source'</span>;
+
+<span class="hljs-keyword">import</span> { Page } <span class="hljs-keyword">from</span> <span class="hljs-string">'./Page'</span>;
+
+<span class="hljs-built_in">window</span>.onload = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span>
+    renderer.render(
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Router</span>
+            <span class="hljs-attr">className</span>=<span class="hljs-string">"router"</span>
+            <span class="hljs-attr">startClass</span>=<span class="hljs-string">"start"</span>
+            <span class="hljs-attr">endClass</span>=<span class="hljs-string">"end"</span>
+            <span class="hljs-attr">map</span>=<span class="hljs-string">{[</span>
+                { <span class="hljs-attr">path:</span> '', <span class="hljs-attr">component:</span> <span class="hljs-attr">Page</span> },
+                { <span class="hljs-attr">path:</span> '<span class="hljs-attr">test</span>', <span class="hljs-attr">component:</span> <span class="hljs-attr">Page</span> },
+                { <span class="hljs-attr">path:</span> /<span class="hljs-attr">Example</span>/<span class="hljs-attr">i</span>, <span class="hljs-attr">component:</span> <span class="hljs-attr">Page</span> }
+            ]}
+        /&gt;</span></span>,
+        <span class="hljs-built_in">document</span>.body
+    );</code></pre>
+				<p><code>Page.tsx</code></p>
+				<pre><code class="language-jsx"><span class="hljs-keyword">import</span> { createElement, Fragment } <span class="hljs-keyword">from</span> <span class="hljs-string">'@bikeshaving/crank'</span>;
+<span class="hljs-keyword">import</span> { PageProps } <span class="hljs-keyword">from</span> <span class="hljs-string">'crank-router/source'</span>;
+
+<span class="hljs-keyword">const</span> Color = {
+    <span class="hljs-attr">test</span>: <span class="hljs-string">'lightblue'</span>,
+    <span class="hljs-attr">example</span>: <span class="hljs-string">'pink'</span>
+};
+
+<span class="hljs-keyword">export</span> <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">Page</span>(<span class="hljs-params">{ path, history, ...data }: PageProps</span>) </span>{
+    <span class="hljs-keyword">return</span> (
+        <span class="xml"><span class="hljs-tag">&lt;<span class="hljs-name">Fragment</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">nav</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"test?id=1"</span>&gt;</span>Test<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"example?id=2"</span>&gt;</span>Example<span class="hljs-tag">&lt;/<span class="hljs-name">a</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">nav</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">ul</span> <span class="hljs-attr">style</span>=<span class="hljs-string">{{</span> <span class="hljs-attr">background:</span> <span class="hljs-attr">Color</span>[<span class="hljs-attr">path</span>] }}&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>path: {path}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+                <span class="hljs-tag">&lt;<span class="hljs-name">li</span>&gt;</span>data: {JSON.stringify(data)}<span class="hljs-tag">&lt;/<span class="hljs-name">li</span>&gt;</span>
+            <span class="hljs-tag">&lt;/<span class="hljs-name">ul</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">Fragment</span>&gt;</span></span>
+    );
+}</code></pre>
+				<p><code>index.less</code></p>
+				<pre><code class="language-LESS"><span class="hljs-selector-tag">body</span> {
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0</span>;
+}
+<span class="hljs-selector-tag">nav</span> &gt; <span class="hljs-selector-tag">a</span> {
+    <span class="hljs-attribute">display</span>: inline-block;
+    <span class="hljs-attribute">margin</span>: <span class="hljs-number">0.5rem</span>;
+}
+<span class="hljs-selector-class">.router</span> {
+    <span class="hljs-attribute">width</span>: <span class="hljs-number">100vw</span>;
+    <span class="hljs-attribute">height</span>: <span class="hljs-number">100vh</span>;
+    <span class="hljs-attribute">overflow</span>: auto;
+    <span class="hljs-attribute">position</span>: relative;
+    <span class="hljs-selector-tag">&amp;</span> &gt; * {
+        <span class="hljs-attribute">position</span>: absolute;
+        <span class="hljs-attribute">top</span>: <span class="hljs-number">0</span>;
+        <span class="hljs-attribute">left</span>: <span class="hljs-number">0</span>;
+        <span class="hljs-attribute">transform</span>: translateX(<span class="hljs-number">0</span>);
+        <span class="hljs-attribute">opacity</span>: <span class="hljs-number">1</span>;
+        <span class="hljs-attribute">transition</span>: <span class="hljs-number">0.5s</span>;
+    }
+    <span class="hljs-selector-class">.start</span> {
+        <span class="hljs-attribute">transform</span>: translateX(<span class="hljs-number">100%</span>);
+        <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+    }
+    <span class="hljs-selector-class">.end</span> {
+        <span class="hljs-attribute">transform</span>: translateX(-<span class="hljs-number">100%</span>);
+        <span class="hljs-attribute">opacity</span>: <span class="hljs-number">0</span>;
+    }
+}</code></pre>
+				<a href="#inspiration" id="inspiration" style="color: inherit; text-decoration: none;">
+					<h2>Inspiration</h2>
+				</a>
+				<ul>
+					<li><p><a href="https://github.com/bikeshaving/crank/issues/27#issuecomment-617633472">https://github.com/bikeshaving/crank/issues/27#issuecomment-617633472</a></p>
+					</li>
+					<li><p><a href="https://github.com/EasyWebApp/cell-router">https://github.com/EasyWebApp/cell-router</a></p>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+					<li class=" tsd-kind-enum">
+						<a href="enums/pathprefix.html" class="tsd-kind-icon">Path<wbr>Prefix</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="classes/history.html" class="tsd-kind-icon">History</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/pageprops.html" class="tsd-kind-icon">Page<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/route.html" class="tsd-kind-icon">Route</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/routerprops.html" class="tsd-kind-icon">Router<wbr>Props</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#linkelement" class="tsd-kind-icon">Link<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#pagecomponent" class="tsd-kind-icon">Page<wbr>Component</a>
+					</li>
+					<li class=" tsd-kind-type-alias">
+						<a href="globals.html#pathmode" class="tsd-kind-icon">Path<wbr>Mode</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#history" class="tsd-kind-icon">history</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="globals.html#location" class="tsd-kind-icon">location</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#router" class="tsd-kind-icon">Router</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#parsepath" class="tsd-kind-icon">parse<wbr>Path</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="globals.html#watchstop" class="tsd-kind-icon">watch<wbr>Stop</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>

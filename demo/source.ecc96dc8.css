@@ -1,0 +1,2 @@
+body{margin:0}nav>a{display:inline-block;margin:.5rem}.router{width:100vw;height:100vh;overflow:auto;position:relative}.router>*{position:absolute;top:0;left:0;transform:translateX(0);opacity:1;transition:.5s}.router .start{transform:translateX(100%);opacity:0}.router .end{transform:translateX(-100%);opacity:0}.router .spinner{right:0;bottom:0;display:flex;justify-content:center;align-items:center}
+/*# sourceMappingURL=source.ecc96dc8.css.map */
