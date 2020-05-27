@@ -32,15 +32,22 @@
     },
     "devDependencies": {
         "@bikeshaving/crank": "^0.1.6",
+        "@types/jest": "^25.2.3",
         "@types/node": "^14.0.5",
+        "@types/puppeteer-core": "^2.0.0",
         "event-target-shim": "^5.0.1",
+        "fs-match": "^1.5.0",
         "husky": "^4.2.5",
         "iterable-observer": "^1.0.0-beta.4",
+        "jest": "^26.0.1",
+        "koapache": "^2.1.1",
         "less": "^3.11.1",
         "lint-staged": "^10.2.6",
         "open-cli": "^6.0.1",
         "parcel-bundler": "^1.12.4",
         "prettier": "^2.0.5",
+        "puppeteer-core": "^3.1.0",
+        "ts-jest": "^26.0.0",
         "typedoc": "^0.17.7",
         "typescript": "^3.9.3",
         "web-utility": "^1.5.2"
@@ -56,13 +63,18 @@
             "prettier --write"
         ]
     },
+    "jest": {
+        "preset": "ts-jest",
+        "testEnvironment": "node"
+    },
     "scripts": {
-        "test": "lint-staged",
         "pack-test": "parcel build test/source/index.html -d docs/demo --public-url .",
         "start": "parcel test/source/index.html -d docs/demo --open",
-        "build": "rm -rf docs/  &&  typedoc  &&  npm run pack-test",
+        "set-chrome": "app-find chrome -c",
+        "test": "lint-staged  &&  npm run pack-test  &&  jest --forceExit",
+        "build": "rm -rf docs/  &&  typedoc",
         "help": "npm run build  &&  open-cli docs/index.html",
-        "prepublishOnly": "npm run build"
+        "prepublishOnly": "npm test  &&  npm run build"
     },
     "husky": {
         "hooks": {

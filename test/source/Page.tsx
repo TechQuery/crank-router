@@ -1,3 +1,4 @@
+/* @jsx createElement */
 import { createElement, Fragment } from '@bikeshaving/crank';
 import { PageProps } from '../../source';
 
