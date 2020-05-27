@@ -14,8 +14,16 @@ window.onload = () =>
             map={[
                 { path: '', component: Page },
                 { path: 'test', component: Page },
-                { path: /Example/i, component: Page }
+                { path: /Example/i, component: Page },
+                {
+                    path: 'sample',
+                    resolver: () =>
+                        new Promise(resolve =>
+                            setTimeout(() => resolve(Page), 500)
+                        )
+                }
             ]}
+            spinner={<div className="spinner">loading...</div>}
         />,
         document.body
     );

@@ -4,7 +4,8 @@ import { PageProps } from '../../source';
 
 const Color = {
     test: 'lightblue',
-    example: 'pink'
+    example: 'pink',
+    sample: 'wheat'
 };
 
 export function Page({ path, history, ...data }: PageProps) {
@@ -13,6 +14,7 @@ export function Page({ path, history, ...data }: PageProps) {
             <nav>
                 <a href="test?id=1">Test</a>
                 <a href="example?id=2">Example</a>
+                <a href="sample?id=3">Sample</a>
             </nav>
             <ul style={{ background: Color[path] }}>
                 <li>path: {path}</li>

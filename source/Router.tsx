@@ -3,11 +3,12 @@ import {
     Component,
     Context,
     createElement,
-    Child
+    Child,
+    Children
 } from '@bikeshaving/crank';
 import { HTMLProps } from 'web-utility/source/DOM-type';
 
-import { History } from './History';
+import { PathMode, History } from './History';
 import { parsePath, watchStop } from './utility';
 
 export interface PageProps extends Props {
@@ -19,22 +20,33 @@ export type PageComponent = (props: PageProps) => ReturnType<Component>;
 
 export interface Route {
     path: string | RegExp;
-    component: PageComponent;
+    component?: PageComponent;
+    resolver?: () => Promise<PageComponent>;
 }
 
 export interface RouterProps extends HTMLProps, Props {
+    mode?: PathMode;
     map: Route[];
     startClass?: string;
     endClass?: string;
+    spinner?: Children;
 }
 
 export async function* Router(
     this: Context,
-    { map, className, children, startClass, endClass }: RouterProps
-): AsyncIterator<Child, any, HTMLElement> {
+    {
+        mode,
+        map,
+        className,
+        children,
+        spinner,
+        startClass,
+        endClass
+    }: RouterProps
+): AsyncGenerator<Child, any, HTMLElement> {
     const root = yield <div className={className} />;
 
-    const history = new History().listen(root);
+    const history = new History(mode).listen(root);
 
     var last: { path: string; component: PageComponent } | undefined;
 
@@ -54,21 +66,33 @@ export async function* Router(
             continue;
         }
 
+        const lastTree = last && (
+            <last.component {...parsePath(last.path)} history={history} />
+        );
+
+        if (!item.component) {
+            if (spinner)
+                yield (
+                    <div className={className}>
+                        {lastTree && (
+                            <div crank-key={last.path}>{lastTree}</div>
+                        )}
+                        {spinner}
+                    </div>
+                );
+            item.component = await item.resolver();
+        }
+
         const nextTree = (
             <item.component {...parsePath(data)} history={history} />
         );
 
         if (last && startClass && endClass) {
             const [startCSS, endCSS] =
-                    history.compare(last.path, data) < 0
-                        ? [startClass, endClass]
-                        : [endClass, startClass],
-                lastTree = (
-                    <last.component
-                        {...parsePath(last.path)}
-                        history={history}
-                    />
-                );
+                history.compare(last.path, data) < 0
+                    ? [startClass, endClass]
+                    : [endClass, startClass];
+
             const {
                 firstElementChild: lastPage,
                 lastElementChild: nextPage

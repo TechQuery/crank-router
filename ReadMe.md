@@ -7,6 +7,19 @@
 
 [![NPM](https://nodei.co/npm/crank-router.png?downloads=true&downloadRank=true&stars=true)][5]
 
+## Feature
+
+-   **Page Link** (support `<a />`, `<area />` & `<form />`)
+
+    -   `<a href="route/path">Page title</a>`
+    -   `<a href="route/path" title="Page title" target="_self">Example page</a>`
+    -   `<a href="#page-section">Page section</a>` (Scroll to an Anchor smoothly)
+    -   `<form method="get" action="route/path" />` (Form Data processed by `URLSearchParams`)
+
+-   **Path Mode**: `location.hash` (default) & `history.pushState()`
+
+-   **Async Loading** (recommend to use with `import()` ECMAScript proposal)
+
 ## Installation
 
 ```shell
@@ -38,7 +51,7 @@ window.onload = () =>
             map={[
                 { path: '', component: Page },
                 { path: 'test', component: Page },
-                { path: 'example', component: Page }
+                { path: /Example/i, component: Page }
             ]}
         />,
         document.body
@@ -108,7 +121,9 @@ nav > a {
 
 ## Inspiration
 
-https://github.com/bikeshaving/crank/issues/27#issuecomment-617633472
+-   https://github.com/bikeshaving/crank/issues/27#issuecomment-617633472
+
+-   https://github.com/EasyWebApp/cell-router
 
 [1]: https://crank.js.org/
 [2]: https://web-cell.dev/iterable-observer/
