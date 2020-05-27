@@ -1,6 +1,8 @@
 import { createQueue } from 'iterable-observer';
+import { walkDOM, scrollTo, formToJSON } from 'web-utility/source/DOM';
+import { buildURLData } from 'web-utility/source/URL';
 
-import { scrollTo } from './utility';
+export type LinkElement = HTMLAnchorElement | HTMLAreaElement | HTMLFormElement;
 
 export enum PathPrefix {
     hash = '#',
@@ -39,12 +41,15 @@ export class History {
     }
 
     push(path: string, title = document.title) {
-        history.pushState(
-            { path, title },
-            (document.title = title),
-            this.prefix + path
-        );
-        return this.set(path);
+        history.pushState({ path, title }, title, this.prefix + path);
+
+        return this.set(path, title);
+    }
+
+    replace(path: string, title = document.title) {
+        history.replaceState({ path, title }, title, this.prefix + path);
+
+        return this.set(path, title);
     }
 
     compare(last: string, next: string) {
@@ -55,37 +60,71 @@ export class History {
         return 0;
     }
 
-    static getInnerPath(link: HTMLAnchorElement) {
-        const path = link.getAttribute('href');
+    static getInnerPath(link: LinkElement) {
+        const path = link.getAttribute('href') || link.getAttribute('action');
 
         if (
-            /^a(rea)?$/i.test(link.tagName) &&
             (link.target || '_self') === '_self' &&
-            !path.match(/^\w+:/)
+            !path.match(/^\w+:/) &&
+            (!(link instanceof HTMLFormElement) ||
+                (link.getAttribute('method') || 'get').toLowerCase() === 'get')
         )
             return path;
     }
 
+    static getTitle(root: HTMLElement) {
+        if (root.title) return root.title;
+
+        var title = '';
+
+        for (const node of walkDOM(root))
+            if (node instanceof Text) {
+                const {
+                    width,
+                    height
+                } = node.parentElement.getBoundingClientRect();
+
+                if (width && height) title += node.nodeValue.trim();
+            }
+
+        return title;
+    }
+
+    handleClick = (event: MouseEvent) => {
+        const link = (event.target as HTMLElement).closest<
+            HTMLAnchorElement | HTMLAreaElement
+        >('a[href], area[href]');
+
+        if (!link) return;
+
+        const path = History.getInnerPath(link);
+
+        if (!path) return;
+
+        event.preventDefault();
+
+        if (/^#.+/.test(path))
+            return scrollTo(path, event.currentTarget as Element);
+
+        this.push(path, History.getTitle(link));
+    };
+
+    handleForm = (event: Event) => {
+        const form = event.target as HTMLFormElement;
+        const path = History.getInnerPath(form);
+
+        if (!path) return;
+
+        event.preventDefault();
+
+        this.push(path + '?' + buildURLData(formToJSON(form)), form.title);
+    };
+
     private popping = false;
 
-    listen(root: EventTarget) {
-        root.addEventListener('click', event => {
-            const link = (event.target as HTMLElement).closest<
-                HTMLAnchorElement
-            >('a[href]');
-
-            if (!link) return;
-
-            const path = History.getInnerPath(link);
-
-            if (!path) return;
-
-            if (path.startsWith('#')) return scrollTo(path);
-
-            event.preventDefault();
-
-            this.push(path, link.title || link.textContent!.trim());
-        });
+    listen(root: Element) {
+        root.addEventListener('click', this.handleClick);
+        root.addEventListener('submit', this.handleForm);
 
         if (this.prefix === PathPrefix.hash)
             window.addEventListener(
@@ -103,7 +142,7 @@ export class History {
             this.popping = false;
         });
 
-        setTimeout(() => this.set(this.path));
+        setTimeout(() => this.replace(this.path, history.state?.title));
 
         return this;
     }

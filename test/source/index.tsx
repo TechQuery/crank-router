@@ -13,7 +13,7 @@ window.onload = () =>
             map={[
                 { path: '', component: Page },
                 { path: 'test', component: Page },
-                { path: 'example', component: Page }
+                { path: /Example/i, component: Page }
             ]}
         />,
         document.body

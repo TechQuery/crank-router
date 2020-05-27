@@ -1,6 +1,6 @@
 {
     "name": "crank-router",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "description": "Router component for Crank engine, which is based on Iterable Observer",
     "keywords": [
         "router",
@@ -26,24 +26,24 @@
         "test": "test"
     },
     "peerDependencies": {
-        "@bikeshaving/crank": "^0.1.0",
+        "@bikeshaving/crank": "^0.1.6",
         "iterable-observer": "^1.0.0-beta.4",
-        "web-utility": "^1.5.0"
+        "web-utility": "^1.5.2"
     },
     "devDependencies": {
-        "@bikeshaving/crank": "^0.1.0",
-        "@types/node": "^13.13.2",
+        "@bikeshaving/crank": "^0.1.6",
+        "@types/node": "^14.0.5",
         "event-target-shim": "^5.0.1",
         "husky": "^4.2.5",
         "iterable-observer": "^1.0.0-beta.4",
         "less": "^3.11.1",
-        "lint-staged": "^10.1.7",
+        "lint-staged": "^10.2.6",
         "open-cli": "^6.0.1",
         "parcel-bundler": "^1.12.4",
         "prettier": "^2.0.5",
-        "typedoc": "^0.17.4",
-        "typescript": "^3.8.3",
-        "web-utility": "^1.5.0"
+        "typedoc": "^0.17.7",
+        "typescript": "^3.9.3",
+        "web-utility": "^1.5.2"
     },
     "prettier": {
         "singleQuote": true,

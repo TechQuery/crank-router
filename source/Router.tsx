@@ -18,7 +18,7 @@ export interface PageProps extends Props {
 export type PageComponent = (props: PageProps) => ReturnType<Component>;
 
 export interface Route {
-    path: string;
+    path: string | RegExp;
     component: PageComponent;
 }
 
@@ -32,16 +32,21 @@ export async function* Router(
     this: Context,
     { map, className, children, startClass, endClass }: RouterProps
 ): AsyncIterator<Child, any, HTMLElement> {
-    const history = new History().listen(this);
-    var last: Route | undefined;
+    const root = yield <div className={className} />;
 
-    map.sort(({ path: A }, { path: B }) => B.localeCompare(A));
+    const history = new History().listen(root);
+
+    var last: { path: string; component: PageComponent } | undefined;
+
+    map.sort(({ path: A }, { path: B }) => (B + '').localeCompare(A + ''));
 
     for await (const {
         data,
         defer: { resolve }
     } of history.stream.observable) {
-        const item = map.find(({ path }) => data.startsWith(path));
+        const item = map.find(({ path }) =>
+            typeof path === 'string' ? data.startsWith(path) : path.test(data)
+        );
 
         if (!item) {
             yield <div className={className}>{children}</div>;

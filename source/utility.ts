@@ -8,16 +8,6 @@ export function watchStop(element: HTMLElement) {
     );
 }
 
-export function scrollTo(selector: string, root?: Element) {
-    const [_, ID] = /^#(.+)/.exec(selector) || [];
-
-    if (ID === 'top') window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-    else
-        (root || document)
-            .querySelector(ID ? `[id="${ID}"]` : selector)
-            ?.scrollIntoView({ behavior: 'smooth' });
-}
-
 export function parsePath(raw: string) {
     const [path, data] = raw.split('?');
 
